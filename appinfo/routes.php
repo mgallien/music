@@ -168,4 +168,10 @@ return ['routes' => [
 	['name' => 'subsonic#handleRequest',	'url' => '/subsonic/rest/{method}',	'verb' => 'POST',	'requirements' => ['method' => '[a-zA-Z0-9\.]+'],	'postfix' => '_post'],
 	// Subsonic API - Allow CORS pre-flight for web clients from different domains
 	['name' => 'subsonic#preflightedCors',	'url' => '/subsonic/rest/{method}',	'verb' => 'OPTIONS','requirements' => ['method' => '[a-zA-Z0-9\.]+']],
-]];
+],
+
+'ocs' => [
+	['name' => 'clientOcsApi#prepareCollection','url' => '/v1/ocsApi/prepare_collection',			'verb' => 'POST'],
+	['name' => 'clientOcsApi#collection',		'url' => '/v1/ocsApi/collection',					'verb' => 'GET'],
+],
+];

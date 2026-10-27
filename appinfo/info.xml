@@ -1,4 +1,8 @@
 <?xml version="1.0"?>
+<!--
+  - SPDX-FileCopyrightText: 2013 Music contributors
+  - SPDX-License-Identifier: AGPL-3.0
+-->
 <info>
 	<id>music</id>
 	<name>Music</name>
@@ -18,7 +22,7 @@
 - The app can handle libraries consisting of thousands of albums and tens of thousands of songs
 - Includes a server backend compatible with the Subsonic and Ampache protocols, allowing playback and browsing of your library on dozens of external apps on Android, iOS, Windows, Linux, etc.
 - Widget for the Nextcloud Dashboard]]></description>
-	<licence>AGPL</licence>
+	<licence>agpl</licence>
 	<author>Pauli Järvinen (current author)</author>
 	<author>Morris Jobke (original author)</author>
 	<author>Jan-Christoph Borchardt (original design)</author>

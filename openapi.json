@@ -1,0 +1,185 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "music",
+        "version": "0.0.1",
+        "description": "Music player, library viewer, and server",
+        "license": {
+            "name": "agpl"
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "basic_auth": {
+                "type": "http",
+                "scheme": "basic"
+            },
+            "bearer_auth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        },
+        "schemas": {
+            "OCSMeta": {
+                "type": "object",
+                "required": [
+                    "status",
+                    "statuscode"
+                ],
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "statuscode": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "totalitems": {
+                        "type": "string"
+                    },
+                    "itemsperpage": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/ocs/v2.php/apps/music/v1/ocsApi/prepare_collection": {
+            "post": {
+                "operationId": "client_ocs_api-prepare-collection",
+                "tags": [
+                    "client_ocs_api"
+                ],
+                "security": [
+                    {
+                        "bearer_auth": []
+                    },
+                    {
+                        "basic_auth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "OCS-APIRequest",
+                        "in": "header",
+                        "description": "Required to be true for the API request to pass",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean",
+                            "default": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Current user is not logged in",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": [
+                                        "ocs"
+                                    ],
+                                    "properties": {
+                                        "ocs": {
+                                            "type": "object",
+                                            "required": [
+                                                "meta",
+                                                "data"
+                                            ],
+                                            "properties": {
+                                                "meta": {
+                                                    "$ref": "#/components/schemas/OCSMeta"
+                                                },
+                                                "data": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ocs/v2.php/apps/music/v1/ocsApi/collection": {
+            "get": {
+                "operationId": "client_ocs_api-collection",
+                "tags": [
+                    "client_ocs_api"
+                ],
+                "security": [
+                    {
+                        "bearer_auth": []
+                    },
+                    {
+                        "basic_auth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "hash",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "OCS-APIRequest",
+                        "in": "header",
+                        "description": "Required to be true for the API request to pass",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean",
+                            "default": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Current user is not logged in",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": [
+                                        "ocs"
+                                    ],
+                                    "properties": {
+                                        "ocs": {
+                                            "type": "object",
+                                            "required": [
+                                                "meta",
+                                                "data"
+                                            ],
+                                            "properties": {
+                                                "meta": {
+                                                    "$ref": "#/components/schemas/OCSMeta"
+                                                },
+                                                "data": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "share",
+            "description": "End-points for shared audio file handling. Methods of this class may be used while there is no user logged in."
+        },
+        {
+            "name": "client_ocs_api",
+            "description": "// Client OCS API ['name' => 'clientOcsApi#prepareCollection','url' => '/ocsApi/prepare_collection', 'verb' => 'POST'], ['name' => 'clientOcsApi#collection', 'url' => '/ocsApi/collection', 'verb' => 'GET'], ['name' => 'clientOcsApi#folders', 'url' => '/ocsApi/folders', 'verb' => 'GET'], ['name' => 'clientOcsApi#genres', 'url' => '/ocsApi/genres', 'verb' => 'GET'], ['name' => 'clientOcsApi#trackByFileId', 'url' => '/ocsApi/files/{fileId}', 'verb' => 'GET'], ['name' => 'clientOcsApi#download', 'url' => '/ocsApi/files/{fileId}/download', 'verb' => 'GET'], ['name' => 'clientOcsApi#filePath', 'url' => '/ocsApi/files/{fileId}/path', 'verb' => 'GET'], ['name' => 'clientOcsApi#fileInfo', 'url' => '/ocsApi/files/{fileId}/info', 'verb' => 'GET'], ['name' => 'clientOcsApi#fileDetails', 'url' => '/ocsApi/files/{fileId}/details', 'verb' => 'GET'], ['name' => 'clientOcsApi#fileLyrics', 'url' => '/ocsApi/files/{fileId}/lyrics', 'verb' => 'GET'], ['name' => 'clientOcsApi#findDetails', 'url' => '/ocsApi/details', 'verb' => 'GET'], ['name' => 'clientOcsApi#getScanState', 'url' => '/ocsApi/scanstate', 'verb' => 'GET'], ['name' => 'clientOcsApi#scan', 'url' => '/ocsApi/scan', 'verb' => 'POST'], ['name' => 'clientOcsApi#removeScanned', 'url' => '/ocsApi/removescanned', 'verb' => 'POST'], ['name' => 'clientOcsApi#resetScanned' , 'url' => '/ocsApi/resetscanned', 'verb' => 'POST'], ['name' => 'clientOcsApi#artistDetails', 'url' => '/ocsApi/artists/{artistId}/details', 'verb' => 'GET'], ['name' => 'clientOcsApi#similarArtists', 'url' => '/ocsApi/artists/{artistId}/similar', 'verb' => 'GET'], ['name' => 'clientOcsApi#albumDetails', 'url' => '/ocsApi/albums/{albumId}/details', 'verb' => 'GET'], ['name' => 'clientOcsApi#setPlayingTrack', 'url' => '/ocsApi/tracks/{trackId}/playing', 'verb' => 'POST'], ['name' => 'clientOcsApi#scrobble', 'url' => '/ocsApi/tracks/{trackId}/scrobble', 'verb' => 'POST'],"
+        }
+    ]
+}
