@@ -102,9 +102,9 @@ class ClientOcsApiController extends OCSController {
      *
      */
     #[NoAdminRequired]
-    #[NoCSRFRequired]
+    #[OCP\AppFramework\Http\Attribute\NoCSRFRequired]
     #[OpenAPI(scope: OpenAPI::SCOPE_DEFAULT)]
-    #[ApiRoute(url: '/ocsApi/prepare_collection', verb: 'POST')]
+    #[ApiRoute(verb: 'POST', url: '/prepare_collection', root: '/apps/music/ocsApi')]
     public function prepareCollection() : DataResponse {
         $hash = $this->collectionService->getCachedJsonHash($this->user());
         if ($hash === null) {
@@ -117,4 +117,35 @@ class ClientOcsApiController extends OCSController {
             'hash' => $hash,
         ]);
     }
+
+    /**
+     * Get music collection
+     * @return DataResponse<Http::STATUS_OK, array{hash: string}, array{}>
+     *
+     * 200: collection ready
+     *
+     */
+    #[NoAdminRequired]
+    #[OCP\AppFramework\Http\Attribute\NoCSRFRequired]
+    #[OpenAPI(scope: OpenAPI::SCOPE_DEFAULT)]
+    #[ApiRoute(verb: 'GET', url: '/collection', root: '/apps/music/ocsApi')]
+    public function collection() : DataResponse {
+        $hash = $this->collectionService->getCachedJsonHash($this->user());
+        if ($hash === null) {
+            // build the collection but ignore the data for now
+            $this->collectionService->getJson($this->user());
+            $hash = $this->collectionService->getCachedJsonHash($this->user());
+        }
+
+        return new DataResponse([
+            'hash' => $hash,
+        ]);
+    }
+
+    /**
+     *     ['name' => 'clientOcsApi#download',                     'url' => '/ocsApi/files/{fileId}/download',     'verb' => 'GET'],
+     *     ['name' => 'clientOcsApi#fileInfo',                     'url' => '/ocsApi/files/{fileId}/info',         'verb' => 'GET'],
+     *     ['name' => 'clientOcsApi#scrobble',                     'url' => '/ocsApi/tracks/{trackId}/scrobble',   'verb' => 'POST'],
+     *
+     */
 }
