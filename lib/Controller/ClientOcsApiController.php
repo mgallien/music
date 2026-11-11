@@ -74,30 +74,6 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 
-/**
- * 	// Client OCS API
- *	['name' => 'clientOcsApi#prepareCollection','url' => '/ocsApi/prepare_collection',			'verb' => 'POST'],
- *	['name' => 'clientOcsApi#collection',		'url' => '/ocsApi/collection',					'verb' => 'GET'],
- *	['name' => 'clientOcsApi#folders',			'url' => '/ocsApi/folders',					'verb' => 'GET'],
- *	['name' => 'clientOcsApi#genres',			'url' => '/ocsApi/genres',						'verb' => 'GET'],
- *	['name' => 'clientOcsApi#trackByFileId',	'url' => '/ocsApi/files/{fileId}',				'verb' => 'GET'],
- *	['name' => 'clientOcsApi#download',			'url' => '/ocsApi/files/{fileId}/download',	'verb' => 'GET'],
- *	['name' => 'clientOcsApi#filePath',			'url' => '/ocsApi/files/{fileId}/path',		'verb' => 'GET'],
- *	['name' => 'clientOcsApi#fileInfo',			'url' => '/ocsApi/files/{fileId}/info',		'verb' => 'GET'],
- *	['name' => 'clientOcsApi#fileDetails',		'url' => '/ocsApi/files/{fileId}/details',		'verb' => 'GET'],
- *	['name' => 'clientOcsApi#fileLyrics',		'url' => '/ocsApi/files/{fileId}/lyrics',		'verb' => 'GET'],
- *	['name' => 'clientOcsApi#findDetails',		'url' => '/ocsApi/details',					'verb' => 'GET'],
- *	['name' => 'clientOcsApi#getScanState',		'url' => '/ocsApi/scanstate',					'verb' => 'GET'],
- *	['name' => 'clientOcsApi#scan',				'url' => '/ocsApi/scan',						'verb' => 'POST'],
- *	['name' => 'clientOcsApi#removeScanned',	'url' => '/ocsApi/removescanned',				'verb' => 'POST'],
- *	['name' => 'clientOcsApi#resetScanned'	,	'url' => '/ocsApi/resetscanned',				'verb' => 'POST'],
- *	['name' => 'clientOcsApi#artistDetails',	'url' => '/ocsApi/artists/{artistId}/details',	'verb' => 'GET'],
- *	['name' => 'clientOcsApi#similarArtists',	'url' => '/ocsApi/artists/{artistId}/similar',	'verb' => 'GET'],
- *	['name' => 'clientOcsApi#albumDetails',		'url' => '/ocsApi/albums/{albumId}/details',	'verb' => 'GET'],
- *	['name' => 'clientOcsApi#setPlayingTrack',	'url' => '/ocsApi/tracks/{trackId}/playing',	'verb' => 'POST'],
- *	['name' => 'clientOcsApi#scrobble',			'url' => '/ocsApi/tracks/{trackId}/scrobble',	'verb' => 'POST'],
- */
-
 class ClientOcsApiController extends OCSController {
     public function __construct(
         string $appName,
@@ -118,51 +94,27 @@ class ClientOcsApiController extends OCSController {
         parent::__construct($appName, $request);
     }
 
+    /**
+     * Prepare music collection
+     * @return DataResponse<Http::STATUS_OK, array{hash: string}, array{}>
+     *
+     * 200: collection ready
+     *
+     */
     #[NoAdminRequired]
     #[NoCSRFRequired]
     #[OpenAPI(scope: OpenAPI::SCOPE_DEFAULT)]
-    /**
-     * Prepare music collection
-     *
-     * @return DataResponse<Http::STATUS_OK, string>
-     *
-     */
+    #[ApiRoute(url: '/ocsApi/prepare_collection', verb: 'POST')]
     public function prepareCollection() : DataResponse {
-     		$hash = $this->collectionService->getCachedJsonHash($this->user());
-     		if ($hash === null) {
-     			// build the collection but ignore the data for now
-     			$this->collectionService->getJson($this->user());
-     			$hash = $this->collectionService->getCachedJsonHash($this->user());
-     }
+        $hash = $this->collectionService->getCachedJsonHash($this->user());
+        if ($hash === null) {
+            // build the collection but ignore the data for now
+            $this->collectionService->getJson($this->user());
+            $hash = $this->collectionService->getCachedJsonHash($this->user());
+        }
 
-     return new DataResponse([
-         'hash' => $hash,
-     ]);
-     }
-
-     #[NoAdminRequired]
-     #[NoCSRFRequired]
-     #[OpenAPI(scope: OpenAPI::SCOPE_DEFAULT)]
-     /**
-      * Get cached music collection
-      *
-      * @return DataResponse<Http::STATUS_OK, string>
-      *
-      */
-     public function collection() : DataResponse {
-         $collectionJson = $this->collectionService->getJson($this->user());
-         $response = new DataResponse($collectionJson);
-         $response->addHeader('Content-Type', 'application/json; charset=utf-8');
-
-         // Instruct the client to cache the result in case it requested the collection with
-         // the correct hash. The hash could be incorrect if the collection would have changed
-         // between calls to prepareCollection() and collection().
-         $requestHash = $this->request->getParam('hash');
-         $actualHash = $this->collectionService->getCachedJsonHash($this->user());
-         if (!empty($actualHash) && $requestHash === $actualHash) {
-             HttpUtil::setClientCachingDays($response, 90);
-         }
-
-         return $response;
-     }
+        return new DataResponse([
+            'hash' => $hash,
+        ]);
+    }
 }
