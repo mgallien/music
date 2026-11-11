@@ -20,7 +20,9 @@
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true
         },
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "classmap-authoritative": true,
+        "autoloader-suffix": "Music"
     },
     "autoload": {
         "psr-4": {
