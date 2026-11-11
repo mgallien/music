@@ -143,6 +143,29 @@ class ClientOcsApiController extends OCSController {
     }
 
     /**
+     * Test router
+     * @return DataResponse<Http::STATUS_OK, array{hash: string}, array{}>
+     *
+     * 200: collection ready
+     *
+     */
+    #[NoAdminRequired]
+    #[OCP\AppFramework\Http\Attribute\NoCSRFRequired]
+    #[OpenAPI(scope: OpenAPI::SCOPE_DEFAULT)]
+    public function testRouter() : DataResponse {
+        $hash = $this->collectionService->getCachedJsonHash($this->user());
+        if ($hash === null) {
+            // build the collection but ignore the data for now
+            $this->collectionService->getJson($this->user());
+            $hash = $this->collectionService->getCachedJsonHash($this->user());
+        }
+
+        return new DataResponse([
+            'hash' => $hash,
+        ]);
+    }
+
+    /**
      *     ['name' => 'clientOcsApi#download',                     'url' => '/ocsApi/files/{fileId}/download',     'verb' => 'GET'],
      *     ['name' => 'clientOcsApi#fileInfo',                     'url' => '/ocsApi/files/{fileId}/info',         'verb' => 'GET'],
      *     ['name' => 'clientOcsApi#scrobble',                     'url' => '/ocsApi/tracks/{trackId}/scrobble',   'verb' => 'POST'],

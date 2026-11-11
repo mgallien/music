@@ -169,4 +169,11 @@ return ['routes' => [
 	// Subsonic API - Allow CORS pre-flight for web clients from different domains
 	['name' => 'subsonic#preflightedCors',	'url' => '/subsonic/rest/{method}',	'verb' => 'OPTIONS','requirements' => ['method' => '[a-zA-Z0-9\.]+']],
 ],
+'ocs' => [
+	[
+		'name' => 'ClientOcsApi#testRouter',
+		'url' => '/ocsApi/testRouter',
+		'verb' => 'GET'
+	],
+],
 ];
