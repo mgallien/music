@@ -180,10 +180,5 @@ return ['routes' => [
 		'url' => '/ocsApi/prepare_collection',
 		'verb' => 'POST'
 	],
-	[
-		'name' => 'ClientOcsApi#collection',
-		'url' => '/ocsApi/collection',
-		'verb' => 'GET'
-	],
 ],
 ];
