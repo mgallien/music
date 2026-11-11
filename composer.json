@@ -19,6 +19,15 @@
         },
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true
+        },
+	"optimize-autoloader": true,
+        "classmap-authoritative": true
+    },
+    "autoload": {
+	"files": [
+	],
+	"psr-4": {
+            "OCA\\Music\\Controller\\": "lib/Controller/"
         }
     },
     "scripts": {
