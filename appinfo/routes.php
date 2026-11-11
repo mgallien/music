@@ -175,5 +175,15 @@ return ['routes' => [
 		'url' => '/ocsApi/testRouter',
 		'verb' => 'GET'
 	],
+	[
+		'name' => 'ClientOcsApi#prepareCollection',
+		'url' => '/ocsApi/prepare_collection',
+		'verb' => 'POST'
+	],
+	[
+		'name' => 'ClientOcsApi#collection',
+		'url' => '/ocsApi/collection',
+		'verb' => 'GET'
+	],
 ],
 ];

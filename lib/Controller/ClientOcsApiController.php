@@ -104,7 +104,6 @@ class ClientOcsApiController extends OCSController {
     #[NoAdminRequired]
     #[OCP\AppFramework\Http\Attribute\NoCSRFRequired]
     #[OpenAPI(scope: OpenAPI::SCOPE_DEFAULT)]
-    #[ApiRoute(verb: 'POST', url: '/prepare_collection', root: '/apps/music/ocsApi')]
     public function prepareCollection() : DataResponse {
         $hash = $this->collectionService->getCachedJsonHash($this->user());
         if ($hash === null) {
@@ -128,7 +127,6 @@ class ClientOcsApiController extends OCSController {
     #[NoAdminRequired]
     #[OCP\AppFramework\Http\Attribute\NoCSRFRequired]
     #[OpenAPI(scope: OpenAPI::SCOPE_DEFAULT)]
-    #[ApiRoute(verb: 'GET', url: '/collection', root: '/apps/music/ocsApi')]
     public function collection() : DataResponse {
         $hash = $this->collectionService->getCachedJsonHash($this->user());
         if ($hash === null) {
